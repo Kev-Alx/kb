@@ -1,9 +1,19 @@
-import * as tf from "@tensorflow/tfjs";
+import { useAI } from "../lib/store";
 
-type Props = { tensor: any };
+type Props = {};
 
-const Answer = async ({ tensor }: Props) => {
-  return <div>Answer</div>;
+const Answer = ({}: Props) => {
+  const { predictions, predictionsPrec } = useAI();
+  return (
+    <div>
+      {predictions.map((p) => (
+        <p>{p}</p>
+      ))}
+      {predictionsPrec.map((p) => (
+        <p>{p}</p>
+      ))}
+    </div>
+  );
 };
 
 export default Answer;
