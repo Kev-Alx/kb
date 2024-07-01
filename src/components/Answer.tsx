@@ -5,13 +5,17 @@ type Props = {};
 const Answer = ({}: Props) => {
   const { predictions, predictionsPrec } = useAI();
   return (
-    <div>
-      {predictions.map((p) => (
-        <p>{p}</p>
-      ))}
-      {predictionsPrec.map((p) => (
-        <p>{p}</p>
-      ))}
+    <div className="flex gap-8">
+      <div>
+        {predictions.map((p) => (
+          <p>{p}</p>
+        ))}
+      </div>
+      <div>
+        {predictionsPrec.map((p) => (
+          <p>{p}</p>
+        ))}
+      </div>
     </div>
   );
 };

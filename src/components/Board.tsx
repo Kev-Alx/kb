@@ -9,6 +9,7 @@ import { useAI, useGame } from "../lib/store";
 import Answer from "./Answer";
 import { toast } from "./ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { Eraser, Trash } from "lucide-react";
 async function loadModel() {
   const model = await tf.loadLayersModel("model.json");
   // model.summary();
@@ -77,6 +78,9 @@ const Board = ({}: Props) => {
       }
       if (round > 5) {
         clearInterval(intervalId);
+        if (points > highScore) {
+          setHighScore(points);
+        }
         navigate("/end", { replace: true });
         return;
       }
@@ -95,7 +99,15 @@ const Board = ({}: Props) => {
     return () => clearInterval(intervalId);
   }, [getTensor]);
 
-  const { round, picture, points, setRound, setPoints } = useGame();
+  const {
+    round,
+    picture,
+    points,
+    setRound,
+    setPoints,
+    highScore,
+    setHighScore,
+  } = useGame();
   // console.log(picture);
   const { setPredictions, setPredictionsPrec } = useAI();
   const [isDrawing, setIsDrawing] = useState(false);
@@ -121,12 +133,12 @@ const Board = ({}: Props) => {
   return (
     <div
       className={cn(
-        "w-full p-8 flex flex-col md:flex-row md:gap-16",
+        "w-full p-8 flex flex-col md:flex-row md:gap-16 gap-4",
         isDrawing && " cursor-pencil",
         isErasing && "cursor-eraser"
       )}
     >
-      <div>
+      <div className="bg-slate-100 p-4 rounded">
         <p>Round {round}</p>
         <p>
           Draw: <span>{picture[round - 1]}</span>
@@ -157,9 +169,11 @@ const Board = ({}: Props) => {
               variant={isErasing ? "secondary" : "default"}
               onClick={() => setIsErasing((e) => !e)}
             >
-              Eraser
+              <Eraser className="h-4 w-4 mr-2" /> Eraser
             </Button>
-            <Button onClick={clear}>Clear</Button>
+            <Button onClick={clear}>
+              <Trash className="h-4 w-4 mr-2" /> Clear
+            </Button>
           </div>
         </section>
       </div>

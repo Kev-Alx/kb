@@ -1,21 +1,18 @@
 import { create } from "zustand";
 import pictures from "../classnames";
 
-type GameStates = "drawing" | "finished" | "start";
-
 type UserStore = {
   round: number;
-  gameState: GameStates;
   picture: string[];
   points: number;
+  highScore: number;
   setPoints: (v: number) => void;
-  setGameState: (v: GameStates) => void;
   setRound: (v: number) => void;
+  setHighScore: (v: number) => void;
 };
 
 export const useGame = create<UserStore>((set, get) => ({
   round: 1,
-  gameState: "start",
   picture:
     Array(5)
       .fill(0)
@@ -23,9 +20,10 @@ export const useGame = create<UserStore>((set, get) => ({
         (_) => pictures.at(Math.floor(Math.random() * (99 - 0 + 1))) || ""
       ) || [],
   points: 0,
+  highScore: 0,
   setPoints: (v: number) => set({ points: v }),
-  setGameState: (v: GameStates) => set({ gameState: v }),
   setRound: (v: number) => set({ round: v }),
+  setHighScore: (v: number) => set({ highScore: v }),
 }));
 
 type AIStore = {
